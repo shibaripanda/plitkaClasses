@@ -23,8 +23,8 @@ bot.start(async (ctx) => {
 
 bot.on('message', async (ctx) => {
     try{
-        ctx.telegram.deleteMessage(ctx.chat.id, ctx.message.message_id)
         if (typeof ctx.message['new_chat_members'] !== "undefined"){
+            ctx.telegram.deleteMessage(ctx.chat.id, ctx.message.message_id)
             const dellMes = await Pli.findOne({id: 'infoBazaPlitka'}, {welcomMessageId: 1, _id: 0})
             if (dellMes.welcomMessageId !== null){
                 bot.telegram.deleteMessage(ctx.chat.id, dellMes.welcomMessageId)
@@ -48,30 +48,42 @@ bot.on('message', async (ctx) => {
 })
 
 bot.action('b1', async (ctx) => {
+    const data1 = await Pli.findOne({id: ctx.from.id}, {status: 1, _id: 0})
+    if (data1 == null){
+        await Pli.updateOne({id: ctx.from.id}, {status: false}, {upsert: true})
+    }
     await ctx.answerCbQuery()
-    const data = (await Pli.findOne({id: ctx.from.id}, {status: 1, _id: 0})).status
-    if (data == false){
-        await Pli.updateOne({id: ctx.from.id}, {home: true, status: true})
+    const data = await Pli.findOne({id: ctx.from.id}, {status: 1, _id: 0})
+    if (data.status == false){
+        await Pli.updateOne({id: ctx.from.id}, {home: true, status: true}, {upsert: true})
         ctx.reply('Спасибо за ответ!')  
     }
     else{
     }
 })
 bot.action('b2', async (ctx) => {
+    const data1 = await Pli.findOne({id: ctx.from.id}, {status: 1, _id: 0})
+    if (data1 == null){
+        await Pli.updateOne({id: ctx.from.id}, {status: false}, {upsert: true})
+    }
     await ctx.answerCbQuery()
-    const data = (await Pli.findOne({id: ctx.from.id}, {status: 1, _id: 0})).status
-    if (data == false){
-        await Pli.updateOne({id: ctx.from.id}, {work: true, status: true})
+    const data = await Pli.findOne({id: ctx.from.id}, {status: 1, _id: 0})
+    if (data.status == false){
+        await Pli.updateOne({id: ctx.from.id}, {work: true, status: true}, {upsert: true})
         ctx.reply('Спасибо за ответ!')   
     }
     else{
     }
 })
 bot.action('b3', async (ctx) => {
+    const data1 = await Pli.findOne({id: ctx.from.id}, {status: 1, _id: 0})
+    if (data1 == null){
+        await Pli.updateOne({id: ctx.from.id}, {status: false}, {upsert: true})
+    }
     await ctx.answerCbQuery()
-    const data = (await Pli.findOne({id: ctx.from.id}, {status: 1, _id: 0})).status
-    if (data == false){
-        await Pli.updateOne({id: ctx.from.id}, {homekWork: true, status: true})
+    const data = await Pli.findOne({id: ctx.from.id}, {status: 1, _id: 0})
+    if (data.status == false){
+        await Pli.updateOne({id: ctx.from.id}, {homekWork: true, status: true}, {upsert: true})
         ctx.reply('Спасибо за ответ!')   
     }
     else{
